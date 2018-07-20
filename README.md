@@ -7,7 +7,7 @@ Simple Tensorflow implementation of [CartoonGAN](http://openaccess.thecvf.com/co
 
 ## Usage
 ### Do edge_smooth
-```python
+```
 > python edge_smooth.py --dataset face2anime --img_size 256
 ```
 
