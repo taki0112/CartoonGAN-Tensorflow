@@ -9,10 +9,10 @@ Simple Tensorflow implementation of [CartoonGAN](http://openaccess.thecvf.com/co
 * Python 3.6
 
 ## Usage
-### Download vgg19
+### 1. Download vgg19
 * [vgg19.npy](https://mega.nz/#!xZ8glS6J!MAnE91ND_WyfZ_8mvkuSa2YcA7q-1ehfSm-Q1fxOvvs)
 
-### Do edge_smooth
+### 2. Do edge_smooth
 ```
 > python edge_smooth.py --dataset face2anime --img_size 256
 ```
@@ -38,10 +38,10 @@ Simple Tensorflow implementation of [CartoonGAN](http://openaccess.thecvf.com/co
            └── ...
 ```
 
-### Train
+### 3. Train
 * python main.py --phase train --dataset face2anime --epoch 100 --init_epoch 1
 
-### Test
+### 4. Test
 * python main.py --phase test --dataset face2anime
 
 ## Author
