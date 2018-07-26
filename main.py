@@ -11,7 +11,7 @@ def parse_args():
     parser.add_argument('--dataset', type=str, default='face2anime', help='dataset_name')
 
     parser.add_argument('--epoch', type=int, default=100, help='The number of epochs to run')
-    parser.add_argument('--init_epoch', type=int, default=10, help='The number of epochs for weight initialization')
+    parser.add_argument('--init_epoch', type=int, default=1, help='The number of epochs for weight initialization')
     parser.add_argument('--iteration', type=int, default=10000, help='The number of training iterations')
     parser.add_argument('--batch_size', type=int, default=1, help='The size of batch size')
     parser.add_argument('--print_freq', type=int, default=1000, help='The number of image_print_freq')
