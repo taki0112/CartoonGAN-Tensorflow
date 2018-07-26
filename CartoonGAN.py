@@ -221,11 +221,11 @@ class CartoonGAN(object) :
         else :
             GP = 0.0
 
-        v_loss = vgg_loss(self.real_A, self.fake_B)
+        v_loss = self.vgg_weight * vgg_loss(self.real_A, self.fake_B)
         g_loss = self.adv_weight * generator_loss(self.gan_type, fake_B_logit)
         d_loss = self.adv_weight * discriminator_loss(self.gan_type, real_B_logit, fake_B_logit, real_B_smooth_logit) + GP
 
-        self.Vgg_loss = self.vgg_weight * v_loss
+        self.Vgg_loss = v_loss
         self.Generator_loss = g_loss + v_loss
         self.Discriminator_loss = d_loss
 
