@@ -199,7 +199,7 @@ def generator_loss(loss_func, fake):
     if loss_func == 'wgan-gp' or loss_func == 'wgan-lp':
         fake_loss = -tf.reduce_mean(fake)
 
-    if loss_func == 'lsgan' or loss_func == 'lsdragan' or loss_func == 'lsdragan-lp':
+    if loss_func == 'lsgan' :
         fake_loss = tf.reduce_mean(tf.square(fake - 1.0))
 
     if loss_func == 'gan' or loss_func == 'dragan':
