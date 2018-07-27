@@ -17,10 +17,22 @@ weight_regularizer = None
 
 def conv(x, channels, kernel=4, stride=2, pad=0, pad_type='zero', use_bias=True, sn=False, scope='conv_0'):
     with tf.variable_scope(scope):
+        if (kernel - stride) % 2 == 0 :
+            pad_top = pad
+            pad_bottom = pad
+            pad_left = pad
+            pad_right = pad
+
+        else :
+            pad_top = pad
+            pad_bottom = kernel - stride - pad_top
+            pad_left = pad
+            pad_right = kernel - stride - pad_left
+
         if pad_type == 'zero' :
-            x = tf.pad(x, [[0, 0], [pad, pad], [pad, pad], [0, 0]])
+            x = tf.pad(x, [[0, 0], [pad_top, pad_bottom], [pad_left, pad_right], [0, 0]])
         if pad_type == 'reflect' :
-            x = tf.pad(x, [[0, 0], [pad, pad], [pad, pad], [0, 0]], mode='REFLECT')
+            x = tf.pad(x, [[0, 0], [pad_top, pad_bottom], [pad_left, pad_right], [0, 0]], mode='REFLECT')
 
         if sn :
             w = tf.get_variable("kernel", shape=[kernel, kernel, x.get_shape()[-1], channels], initializer=weight_init,
