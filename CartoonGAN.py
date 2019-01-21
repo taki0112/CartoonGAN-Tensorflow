@@ -94,7 +94,7 @@ class CartoonGAN(object) :
 
             # Down-Sampling
             for i in range(2) :
-                x = conv(x, channel*2, kernel=3, stride=2, pad=1, use_bias=True, scope='conv_s2_'+str(i))
+                x = conv(x, channel*2, kernel=3, stride=2, pad=1, use_bias=False, scope='conv_s2_'+str(i))
                 x = conv(x, channel*2, kernel=3, stride=1, pad=1, use_bias=False, scope='conv_s1_'+str(i))
                 x = instance_norm(x, scope='ins_norm_'+str(i))
                 x = relu(x)
@@ -107,7 +107,7 @@ class CartoonGAN(object) :
 
             # Up-Sampling
             for i in range(2) :
-                x = deconv(x, channel//2, kernel=3, stride=2, use_bias=True, scope='deconv_'+str(i))
+                x = deconv(x, channel//2, kernel=3, stride=2, use_bias=False, scope='deconv_'+str(i))
                 x = conv(x, channel//2, kernel=3, stride=1, pad=1, use_bias=False, scope='up_conv_'+str(i))
                 x = instance_norm(x, scope='up_ins_norm_'+str(i))
                 x = relu(x)
@@ -115,7 +115,7 @@ class CartoonGAN(object) :
                 channel = channel // 2
 
 
-            x = conv(x, channels=self.img_ch, kernel=7, stride=1, pad=3, pad_type='reflect', use_bias=True, scope='G_logit')
+            x = conv(x, channels=self.img_ch, kernel=7, stride=1, pad=3, pad_type='reflect', use_bias=False, scope='G_logit')
             x = tanh(x)
 
             return x
@@ -127,11 +127,11 @@ class CartoonGAN(object) :
     def discriminator(self, x_init, reuse=False, scope="discriminator"):
         channel = self.ch // 2
         with tf.variable_scope(scope, reuse=reuse):
-            x = conv(x_init, channel, kernel=3, stride=1, pad=1, use_bias=True, sn=self.sn, scope='conv_0')
+            x = conv(x_init, channel, kernel=3, stride=1, pad=1, use_bias=False, sn=self.sn, scope='conv_0')
             x = lrelu(x, 0.2)
 
             for i in range(1, self.n_dis):
-                x = conv(x, channel * 2, kernel=3, stride=2, pad=1, use_bias=True, sn=self.sn, scope='conv_s2_' + str(i))
+                x = conv(x, channel * 2, kernel=3, stride=2, pad=1, use_bias=False, sn=self.sn, scope='conv_s2_' + str(i))
                 x = lrelu(x, 0.2)
 
                 x = conv(x, channel * 4, kernel=3, stride=1, pad=1, use_bias=False, sn=self.sn, scope='conv_s1_' + str(i))
@@ -144,7 +144,7 @@ class CartoonGAN(object) :
             x = instance_norm(x, scope='last_ins_norm')
             x = lrelu(x, 0.2)
 
-            x = conv(x, channels=1, kernel=3, stride=1, pad=1, use_bias=True, sn=self.sn, scope='D_logit')
+            x = conv(x, channels=1, kernel=3, stride=1, pad=1, use_bias=False, sn=self.sn, scope='D_logit')
 
             return x
 
