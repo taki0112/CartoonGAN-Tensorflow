@@ -30,22 +30,25 @@ def make_edge_smooth(dataset_name, img_size) :
         gray_img = cv2.imread(f, 0)
 
         bgr_img = cv2.resize(bgr_img, (img_size, img_size))
+        pad_img = np.pad(bgr_img, ((2, 2), (2, 2), (0, 0)), mode='reflect')
         gray_img = cv2.resize(gray_img, (img_size, img_size))
 
         edges = cv2.Canny(gray_img, 100, 200)
         dilation = cv2.dilate(edges, kernel)
 
-        h, w = edges.shape
+        gauss_img = np.copy(rgb_img)
+        idx = np.where(dilation != 0)
+        for i in range(np.sum(dilation != 0)):
+            gauss_img[idx[0][i], idx[1][i], 0] = np.sum(
+                np.multiply(pad_img[idx[0][i]:idx[0][i] + kernel_size, idx[1][i]:idx[1][i] + kernel_size, 0], gauss))
+            gauss_img[idx[0][i], idx[1][i], 1] = np.sum(
+                np.multiply(pad_img[idx[0][i]:idx[0][i] + kernel_size, idx[1][i]:idx[1][i] + kernel_size, 1], gauss))
+            gauss_img[idx[0][i], idx[1][i], 2] = np.sum(
+                np.multiply(pad_img[idx[0][i]:idx[0][i] + kernel_size, idx[1][i]:idx[1][i] + kernel_size, 2], gauss))
 
-        gauss_img = np.copy(bgr_img)
-        for i in range(kernel_size // 2, h - kernel_size // 2):
-            for j in range(kernel_size // 2, w - kernel_size // 2):
-                if dilation[i, j] != 0:  # gaussian blur to only edge
-                    gauss_img[i, j, 0] = np.sum(np.multiply(bgr_img[i - kernel_size // 2:i + kernel_size // 2 + 1, j - kernel_size // 2:j + kernel_size // 2 + 1, 0], gauss))
-                    gauss_img[i, j, 1] = np.sum(np.multiply(bgr_img[i - kernel_size // 2:i + kernel_size // 2 + 1, j - kernel_size // 2:j + kernel_size // 2 + 1, 1], gauss))
-                    gauss_img[i, j, 2] = np.sum(np.multiply(bgr_img[i - kernel_size // 2:i + kernel_size // 2 + 1, j - kernel_size // 2:j + kernel_size // 2 + 1, 2], gauss))
+        result = np.concatenate((rgb_img, gauss_img), 1)
 
-        cv2.imwrite(os.path.join(save_dir, file_name), gauss_img)
+        cv2.imwrite(os.path.join(save_dir, file_name), result)
 
 """main"""
 def main():
