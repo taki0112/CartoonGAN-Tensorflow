@@ -36,7 +36,7 @@ def make_edge_smooth(dataset_name, img_size) :
         edges = cv2.Canny(gray_img, 100, 200)
         dilation = cv2.dilate(edges, kernel)
 
-        gauss_img = np.copy(rgb_img)
+        gauss_img = np.copy(bgr_img)
         idx = np.where(dilation != 0)
         for i in range(np.sum(dilation != 0)):
             gauss_img[idx[0][i], idx[1][i], 0] = np.sum(
@@ -46,7 +46,7 @@ def make_edge_smooth(dataset_name, img_size) :
             gauss_img[idx[0][i], idx[1][i], 2] = np.sum(
                 np.multiply(pad_img[idx[0][i]:idx[0][i] + kernel_size, idx[1][i]:idx[1][i] + kernel_size, 2], gauss))
 
-        result = np.concatenate((rgb_img, gauss_img), 1)
+        result = np.concatenate((bgr_img, gauss_img), 1)
 
         cv2.imwrite(os.path.join(save_dir, file_name), result)
 
