@@ -46,9 +46,7 @@ def make_edge_smooth(dataset_name, img_size) :
             gauss_img[idx[0][i], idx[1][i], 2] = np.sum(
                 np.multiply(pad_img[idx[0][i]:idx[0][i] + kernel_size, idx[1][i]:idx[1][i] + kernel_size, 2], gauss))
 
-        result = np.concatenate((bgr_img, gauss_img), 1)
-
-        cv2.imwrite(os.path.join(save_dir, file_name), result)
+        cv2.imwrite(os.path.join(save_dir, file_name), gauss_img)
 
 """main"""
 def main():
