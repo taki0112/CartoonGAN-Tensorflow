@@ -18,6 +18,9 @@ class Vgg19:
             vgg19_npy_path = path
             print(vgg19_npy_path)
 
+        np_load_old = np.load
+        np.load = lambda *a,**k: np_load_old(*a, allow_pickle=True, **k)
+            
         self.data_dict = np.load(vgg19_npy_path, encoding='latin1').item()
         print("npy file loaded")
 
